@@ -45,10 +45,18 @@ class InfoFragment : Fragment() {
             addFragment(errorFragment)
         })
 
+        binding.infoRefreshButton.setOnClickListener {
+            refreshData();
+        }
+
         // Start fetching data from home server (connection by VPN)
         infoViewModel.fetchData("http://192.168.1.66:3000/")
 
         return binding.root
+    }
+
+    private fun refreshData() {
+        infoViewModel.fetchData("http://192.168.1.66:3000/")
     }
 
     private fun cleanResponse(response: String): String {
