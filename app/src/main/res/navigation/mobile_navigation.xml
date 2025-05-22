@@ -16,6 +16,10 @@
         android:label="@string/menu_info"
         tools:layout="@layout/fragment_info" />
 
-
+    <fragment
+        android:id="@+id/media_backup"
+        android:name="com.example.mythomash.ui.backup.BackupFragment"
+        android:label="Backup Media"
+        tools:layout="@layout/fragment_backup" />
 
 </navigation>
