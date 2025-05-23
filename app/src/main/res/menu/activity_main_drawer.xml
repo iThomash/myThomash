@@ -17,5 +17,9 @@
             android:id="@+id/media_backup"
             android:icon="@drawable/baseline_backup"
             android:title="Media Backup" />
+        <item
+            android:id="@+id/sensor_logger_layout"
+            android:icon="@drawable/baseline_location"
+            android:title="Log movement" />
     </group>
 </menu>

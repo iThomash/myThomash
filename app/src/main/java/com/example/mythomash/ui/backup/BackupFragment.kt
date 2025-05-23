@@ -92,6 +92,7 @@ class BackupFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         viewModel = ViewModelProvider(this)[BackupViewModel::class.java]
         viewModel.selectedImage.observe(viewLifecycleOwner) { bitmap ->
             binding.imagePreview.setImageBitmap(bitmap)

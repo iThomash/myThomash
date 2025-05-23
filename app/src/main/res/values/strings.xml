@@ -13,4 +13,8 @@
     <string name="take_photo">Take Photo</string>
     <string name="start_capture">Start Capture</string>
     <string name="stop_capture">Stop Capture</string>
+    <string name="image_preview">Image preview</string>
+    <string name="select_image_video_from_gallery">Select Image/Video from Gallery</string>
+    <string name="capture_photo_video">Capture Photo/Video</string>
+    <string name="send_to_raspberry_pi">Send to Raspberry Pi</string>
 </resources>

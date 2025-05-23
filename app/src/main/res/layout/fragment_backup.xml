@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginBottom="8dp"
+        android:visibility="gone"
         android:background="@android:color/darker_gray" />
 
     <!-- Captured/selected image preview -->
@@ -21,26 +22,26 @@
         android:layout_height="200dp"
         android:scaleType="centerCrop"
         android:background="@android:color/darker_gray"
-        android:contentDescription="Image preview" />
+        android:contentDescription="@string/image_preview" />
 
     <!-- Select from gallery -->
     <Button
         android:id="@+id/button_select_file"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select Image/Video from Gallery" />
+        android:text="@string/select_image_video_from_gallery" />
 
     <!-- Capture with camera -->
     <Button
         android:id="@+id/button_capture_media"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Capture Photo/Video" />
+        android:text="@string/capture_photo_video" />
 
     <!-- Upload to server -->
     <Button
         android:id="@+id/button_upload"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Send to Raspberry Pi" />
+        android:text="@string/send_to_raspberry_pi" />
 </LinearLayout>

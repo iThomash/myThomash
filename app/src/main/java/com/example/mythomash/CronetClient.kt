@@ -179,4 +179,73 @@ class CronetClient(context: Context) {
         }, timeoutSeconds.toLong(), TimeUnit.SECONDS)
     }
 
+    fun postJsonData(
+        url: String,
+        jsonData: String,
+        callback: ResponseCallback,
+        timeoutSeconds: Int = 15
+    ) {
+        val executor: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
+
+        val byteBuffer = ByteBuffer.wrap(jsonData.toByteArray(Charsets.UTF_8))
+
+        val requestBuilder = cronetEngine.newUrlRequestBuilder(
+            url,
+            object : UrlRequest.Callback() {
+                private val responseBuilder = StringBuilder()
+
+                override fun onResponseStarted(request: UrlRequest, info: UrlResponseInfo) {
+                    request.read(ByteBuffer.allocateDirect(1024))
+                }
+
+                override fun onReadCompleted(
+                    request: UrlRequest,
+                    info: UrlResponseInfo,
+                    byteBuffer: ByteBuffer
+                ) {
+                    byteBuffer.flip()
+                    val bytes = ByteArray(byteBuffer.remaining())
+                    byteBuffer.get(bytes)
+                    responseBuilder.append(String(bytes, Charsets.UTF_8))
+                    byteBuffer.clear()
+                    request.read(byteBuffer)
+                }
+
+                override fun onSucceeded(request: UrlRequest, info: UrlResponseInfo) {
+                    callback.onResponse(responseBuilder.toString())
+                    executor.shutdown()
+                }
+
+                override fun onFailed(request: UrlRequest, info: UrlResponseInfo?, error: CronetException) {
+                    Log.e("CronetClient", "Request failed with exception", error)
+                    callback.onError(error.message ?: "Unknown error")
+                    executor.shutdown()
+                }
+
+                override fun onRedirectReceived(request: UrlRequest, info: UrlResponseInfo, newLocationUrl: String) {
+                    request.followRedirect()
+                }
+            },
+            executor
+        )
+
+        requestBuilder.setHttpMethod("POST")
+        requestBuilder.addHeader("Content-Type", "application/json")
+        requestBuilder.setUploadDataProvider(
+            UploadDataProviders.create(byteBuffer),
+            executor
+        )
+
+        val request = requestBuilder.build()
+        request.start()
+
+        executor.schedule({
+            if (!request.isDone) {
+                request.cancel()
+                callback.onError("Request timed out after $timeoutSeconds seconds")
+                executor.shutdown()
+            }
+        }, timeoutSeconds.toLong(), TimeUnit.SECONDS)
+    }
+
 }

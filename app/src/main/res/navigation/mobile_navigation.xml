@@ -22,4 +22,9 @@
         android:label="Backup Media"
         tools:layout="@layout/fragment_backup" />
 
+    <fragment
+        android:id="@+id/sensor_logger_layout"
+        android:name="com.example.mythomash.ui.location.SensorLoggerFragment"
+        android:label="Log movement data"
+        tools:layout="@layout/fragment_data_collection" />
 </navigation>
