@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var gestureDetector: GestureDetector
+    private lateinit var shakeDetector: FlashlightShakeDetector
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,9 +33,11 @@ class MainActivity : AppCompatActivity() {
 
         drawerLayout = binding.drawerLayout
         gestureDetector = GestureDetector(this, SwipeGestureListener())
+        shakeDetector = FlashlightShakeDetector(this)
 
         // Attach touch listener to the root view
-        binding.root.setOnTouchListener { _, event -> gestureDetector.onTouchEvent(event)
+        binding.root.setOnTouchListener { _, event ->
+            gestureDetector.onTouchEvent(event)
             false
         }
 
@@ -50,6 +53,16 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        shakeDetector.start()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        shakeDetector.stop()
     }
 
     // Gesture listener to detect swipes
